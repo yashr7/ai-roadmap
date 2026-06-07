@@ -411,6 +411,13 @@ export default function App() {
 
   // ── Load state from disk on mount ──
   useEffect(() => {
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    if (!isLocal) {
+      setDiskStatus("cloud");
+      setIsLoaded(true);
+      return;
+    }
+
     fetch("/api/load-state")
       .then(res => {
         if (res.ok) return res.json();
@@ -441,6 +448,12 @@ export default function App() {
       "ai-engineering-roadmap-state",
       JSON.stringify(stateData)
     );
+
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    if (!isLocal) {
+      setDiskStatus("cloud");
+      return;
+    }
 
     setDiskStatus("saving");
     fetch("/api/save-state", {
@@ -591,6 +604,7 @@ export default function App() {
             <h1>AI Engineering Roadmap</h1>
             <div className="header-actions">
               <span className="version-tag">V3 · Interactive</span>
+              {diskStatus === "cloud" && <span className="sync-status status-cloud">☁ Cloud Mode</span>}
               {diskStatus === "saved" && <span className="sync-status status-saved">● Disk Synced</span>}
               {diskStatus === "saving" && <span className="sync-status status-saving">○ Saving...</span>}
               {diskStatus === "error" && <span className="sync-status status-error">▲ Disk Error</span>}

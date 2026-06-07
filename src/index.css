@@ -177,6 +177,11 @@ h1 {
   background: rgba(198, 69, 69, 0.08);
 }
 
+.status-cloud {
+  color: #4b5563;
+  background: rgba(75, 85, 99, 0.08);
+}
+
 .tagline {
   font-family: var(--font-sans);
   font-size: 16px;
